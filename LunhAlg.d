@@ -9,14 +9,8 @@ void main()
 	string input = stdin.readln();		//reads with \n
 	input = chomp(input);
 
-	//check if appropriate length
-	if(input.length != 16)
-	{
-		//ERROR (number is too long to be a card number)
-		return;
-	}
+	int[] cardNum = new int[input.length];
 
-	int[] cardNum = new int[16];
 	//distribute into numerical array
 	foreach(i; 0 .. input.length)
 	{
@@ -24,9 +18,35 @@ void main()
 		cardNum[i] = cast(int)input[i] - 48;
 	}
 
-	//double every second number
-	
-	//if the value is > 10 sum it's component digits
+	//double every second number starting from the right end
+	for(int i = (cast(int)cardNum.length-2); i > 0; i = i-2)
+	{
+		write("doubling...	", cardNum[i]);		//[DEBUG]
+		cardNum[i] = cardNum[i] * 2;
+		write("-->	", cardNum[i], "\n");		//[DEBUG]
+		//check if sum is greater than 9
+		if(cardNum[i] > 9) 
+		{
+			cardNum[i] = 1 + cardNum[i] % 10;	//sum the digits	
+		}
+		write("\t@", i, " ", cardNum[i], "\n");
+	}
+
+	writeln(cardNum);		//[DEBUG]
+
 	//sum the array
+	int sum = 0;
+
+	foreach(int item; cardNum)
+	{
+		sum += item;
+	}
+
+	writeln("Sum: ", sum);		//[DEBUG]
+
 	//if mod 10 == 0, number is valid
+	if(sum % 10 == 0)
+	{
+		writeln("Number Verified");
+	}
 }
